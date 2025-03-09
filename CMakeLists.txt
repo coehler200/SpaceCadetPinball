@@ -186,7 +186,7 @@ set(SOURCE_FILES
         SpaceCadetPinball/imstb_truetype.h
         SpaceCadetPinball/DebugOverlay.cpp
         SpaceCadetPinball/DebugOverlay.h
-         "SpaceCadetPinball/data.h" "SpaceCadetPinball/data.cpp")
+         "SpaceCadetPinball/data.h" "SpaceCadetPinball/data.cpp" "SpaceCadetPinball/dataLink.h" "SpaceCadetPinball/dataLink.cpp")
 
 # On Windows, include resource file with the icon
 if(WIN32)

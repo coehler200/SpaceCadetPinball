@@ -27,7 +27,9 @@
 #include "TPinballTable.h"
 #include "TTextBox.h"
 #include "translations.h"
-#include "data.h"
+#include "dataLink.h"
+
+// #include "data.h"
 
 TPinballTable* pb::MainTable = nullptr;
 DatFile* pb::record_table = nullptr;
@@ -41,6 +43,7 @@ std::string pb::DatFileName, pb::BasePath;
 ImU32 pb::TextBoxColor;
 int pb::quickFlag = 0;
 TTextBox *pb::InfoTextBox, *pb::MissTextBox;
+DataLink *link;
 
 
 int pb::init()
@@ -116,6 +119,14 @@ int pb::init()
 		sscanf(fontColor, "%d %d %d", &red, &green, &blue);
 	TextBoxColor = IM_COL32(red, green, blue, 255);
 
+	link = new DataLink(MainTable);
+
+	bool linkInitialized = link->init();
+	if (!linkInitialized)
+	{
+		return 1;
+	}
+
 	return 0;
 }
 
@@ -127,6 +138,7 @@ int pb::uninit()
 	high_score::write();
 	delete MainTable;
 	MainTable = nullptr;
+	link = NULL;
 	timer::uninit();
 	render::uninit();
 	return 0;
@@ -337,7 +349,8 @@ void pb::frame(float dtMilliSec)
 void pb::timed_frame(float timeDelta)
 {
 	// printf("Frame diff: %f\n", timeDelta);
-	Data::printData(MainTable);
+	// Data::printData(MainTable);
+	link->update(timeDelta);
 	for (auto ball : MainTable->BallList)
 	{
 		if (!ball->ActiveFlag || ball->HasGroupFlag || ball->CollisionComp || ball->Speed >= 0.8f)
