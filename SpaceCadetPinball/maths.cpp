@@ -251,6 +251,7 @@ vector2 maths::vector_mul(const vector2& vec1, float val)
 float maths::basic_collision(TBall* ball, vector2* nextPosition, vector2* direction, float elasticity, float smoothness,
                              float threshold, float boost)
 {
+	// printf("HIT\n");
 	ball->Position.X = nextPosition->X + direction->X * 0.0005f;
 	ball->Position.Y = nextPosition->Y + direction->Y * 0.0005f;
 

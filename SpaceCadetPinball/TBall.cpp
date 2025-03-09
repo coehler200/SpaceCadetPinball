@@ -78,6 +78,8 @@ void TBall::Repaint()
 			Radius + CollisionOffset.Z;
 	}
 
+	//printf("Ball Location: %f %f\n", Position.X, Position.Y);
+
 	auto pos2D = proj::xform_to_2d(Position);
 	auto zDepth = proj::z_distance(Position);
 

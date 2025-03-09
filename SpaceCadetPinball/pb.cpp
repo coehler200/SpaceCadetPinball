@@ -27,6 +27,7 @@
 #include "TPinballTable.h"
 #include "TTextBox.h"
 #include "translations.h"
+#include "data.h"
 
 TPinballTable* pb::MainTable = nullptr;
 DatFile* pb::record_table = nullptr;
@@ -335,6 +336,8 @@ void pb::frame(float dtMilliSec)
 
 void pb::timed_frame(float timeDelta)
 {
+	// printf("Frame diff: %f\n", timeDelta);
+	Data::printData(MainTable);
 	for (auto ball : MainTable->BallList)
 	{
 		if (!ball->ActiveFlag || ball->HasGroupFlag || ball->CollisionComp || ball->Speed >= 0.8f)

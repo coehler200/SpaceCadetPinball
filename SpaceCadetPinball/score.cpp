@@ -122,6 +122,7 @@ void score::set(scoreStruct* score, int value)
 
 void score::update(scoreStruct* score)
 {
+	// printf("Score: %d\n", score->Score);
 	char scoreBuf[12]{};
 	if (score && score->DirtyFlag && score->Score <= 1000000000)
 	{
