@@ -98,7 +98,7 @@ void DataLink::update(float time)
 
 void DataLink::readIncomingAndAct(float time)
 {
-	// Read action. One of "flipperL", "flipperR", "plunger", "none"
+	// Read action. One of "flipperL", "flipperR", "plunger", "reset", "none"
 	ReadFile(hPipe, bufIn, sizeof(bufIn) - 1, &dwRead, NULL);
 	bufIn[dwRead] = '\0';
 	
@@ -122,6 +122,12 @@ void DataLink::readIncomingAndAct(float time)
 		table->Message(MessageCode::RightFlipperInputReleased, time);
 		table->Message(MessageCode::PlungerInputPressed, time);
 		printf("plunger\n");
+	}
+	else if (strcmp(bufIn, "reset") == 0)
+	{
+		table->Message(MessageCode::NewGame, time);
+		frame = 0;
+		printf("reset\n");
 	}
 	else
 	{
