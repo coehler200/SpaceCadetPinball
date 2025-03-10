@@ -14,15 +14,18 @@ char bufIn[1024];
 char bufOut[1024];
 DWORD dwRead;
 DWORD dwWrite;
+unsigned long int frame;
 
 DataLink::DataLink()
 {
 	table = nullptr;
+	frame = 0;
 }
 
 DataLink::DataLink(TPinballTable* t)
 {
 	table = t;
+	frame = 0;
 }
 
 DataLink::~DataLink()
@@ -75,6 +78,7 @@ void DataLink::update(float time)
 	int ballInDrainFlag = table->BallInDrainFlag;
 
 	sprintf(bufOut, "{"
+		"\"frame\": %lu,"
 		"\"ballPosX\": %f,"
 		"\"ballPosY\": %f,"
 		"\"ballVelX\": %f,"
@@ -83,11 +87,13 @@ void DataLink::update(float time)
 		"\"flipperRAngle\": %f,"
 		"\"score\": %d,"
 		"\"inDrain\": %d"
-	"}", ballPosX, ballPosY, ballVelX, ballVelY, flipperLAngle, flipperRAngle, score, ballInDrainFlag);
+	"}", frame, ballPosX, ballPosY, ballVelX, ballVelY, flipperLAngle, flipperRAngle, score, ballInDrainFlag);
 
 	WriteFile(hPipe, bufOut, strlen(bufOut), &dwWrite, NULL);
 
 	readIncomingAndAct(time);
+
+	frame++;
 }
 
 void DataLink::readIncomingAndAct(float time)
@@ -98,30 +104,30 @@ void DataLink::readIncomingAndAct(float time)
 	
 	if (strcmp(bufIn, "flipperL") == 0)
 	{
-		//table->Message(MessageCode::LeftFlipperInputPressed, time);
-		//table->Message(MessageCode::RightFlipperInputReleased, time);
-		//table->Message(MessageCode::PlungerInputReleased, time);
+		table->Message(MessageCode::LeftFlipperInputPressed, time);
+		table->Message(MessageCode::RightFlipperInputReleased, time);
+		table->Message(MessageCode::PlungerInputReleased, time);
 		printf("flipperL\n");
 	}
 	else if (strcmp(bufIn, "flipperR") == 0)
 	{
-		//table->Message(MessageCode::LeftFlipperInputReleased, time);
-		//table->Message(MessageCode::RightFlipperInputPressed, time);
-		//table->Message(MessageCode::PlungerInputReleased, time);
+		table->Message(MessageCode::LeftFlipperInputReleased, time);
+		table->Message(MessageCode::RightFlipperInputPressed, time);
+		table->Message(MessageCode::PlungerInputReleased, time);
 		printf("flipperR\n");
 	}
 	else if (strcmp(bufIn, "plunger") == 0)
 	{
-		//table->Message(MessageCode::LeftFlipperInputReleased, time);
-		//table->Message(MessageCode::RightFlipperInputReleased, time);
-		//table->Message(MessageCode::PlungerInputPressed, time);
+		table->Message(MessageCode::LeftFlipperInputReleased, time);
+		table->Message(MessageCode::RightFlipperInputReleased, time);
+		table->Message(MessageCode::PlungerInputPressed, time);
 		printf("plunger\n");
 	}
 	else
 	{
-		//table->Message(MessageCode::LeftFlipperInputReleased, time);
-		//table->Message(MessageCode::RightFlipperInputReleased, time);
-		//table->Message(MessageCode::PlungerInputReleased, time);
+		table->Message(MessageCode::LeftFlipperInputReleased, time);
+		table->Message(MessageCode::RightFlipperInputReleased, time);
+		table->Message(MessageCode::PlungerInputReleased, time);
 		printf("none\n");
 	}
 }
