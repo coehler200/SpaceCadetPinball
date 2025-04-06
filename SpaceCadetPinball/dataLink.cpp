@@ -123,6 +123,21 @@ void DataLink::readIncomingAndAct(float time)
 		table->Message(MessageCode::PlungerInputPressed, time);
 		printf("plunger\n");
 	}
+	else if (strcmp(bufIn, "resetBall") == 0)
+	{
+		table->Message(MessageCode::LeftFlipperInputReleased, time);
+		table->Message(MessageCode::RightFlipperInputReleased, time);
+		table->Message(MessageCode::PlungerInputReleased, time);
+		for (auto ball : table->BallList)
+		{
+			if (ball->ActiveFlag)
+			{
+				ball->Position = vector3(0, -8);
+				ball->Direction = vector3(0, 0);
+			}
+;		}
+		printf("resetBall\n");
+	}
 	else if (strcmp(bufIn, "reset") == 0)
 	{
 		table->Message(MessageCode::NewGame, time);
