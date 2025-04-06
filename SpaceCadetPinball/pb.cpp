@@ -31,6 +31,8 @@
 
 // #include "data.h"
 
+const float SPEED_MULT = 4.0;
+
 TPinballTable* pb::MainTable = nullptr;
 DatFile* pb::record_table = nullptr;
 int pb::time_ticks = 0;
@@ -301,6 +303,8 @@ void pb::frame(float dtMilliSec)
 		dtMilliSec = 100;
 	if (dtMilliSec <= 0)
 		return;
+
+	dtMilliSec *= SPEED_MULT;
 
 	if (FullTiltMode && !demo_mode)
 	{
